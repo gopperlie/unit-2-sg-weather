@@ -14,7 +14,7 @@ export default function App () {
   <Route path="/" element={<Homepage/>} />
   <Route path="/Weather2hrs" element={<Weather2hrs/>} />
   <Route path="/ErpTable" element={<Rainfall/>} />
-  <Route path="/Search" element={<UVIndex/>} />
+  <Route path="/UVIndex" element={<UVIndex/>} />
   </Routes>
   </>
 

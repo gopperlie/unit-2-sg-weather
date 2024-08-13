@@ -8,6 +8,7 @@ export default function Weather2hrs () {
 // const cors = require("cors");
 // ErpTable.use(cors());
 async function getDataAndMapProperties() {
+    //remember to park all these URL services into 1 file later
     const url = "https://api-open.data.gov.sg/v2/real-time/api/two-hr-forecast";
     try {
         const response = await fetch(url);
