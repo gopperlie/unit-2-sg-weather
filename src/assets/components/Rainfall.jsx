@@ -7,7 +7,7 @@ export default function StationReadings() {
     const [error, setError] = useState(null);
 
     async function fetchData() {
-        const url = "https://api-open.data.gov.sg/v2/real-time/api/rainfall";
+        const url = `${import.meta.env.VITE_API_URL_RAINREADINGS}`;
         try {
             const response = await fetch(url);
             if (!response.ok) {

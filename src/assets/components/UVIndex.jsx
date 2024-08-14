@@ -5,7 +5,7 @@ export default function UVIndex() {
     const [isLoading, setIsLoading] = useState(true);
 
     async function getUVIndex() {
-        const url = "https://api-open.data.gov.sg/v2/real-time/api/uv";
+        const url = `${import.meta.env.VITE_API_URL_UVI}`;
         try {
             const response = await fetch(url);
             if (!response.ok) {

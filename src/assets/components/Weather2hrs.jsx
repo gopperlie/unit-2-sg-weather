@@ -1,4 +1,6 @@
 import { useState,useEffect } from 'react';
+import { get2hrAirtable } from '../services/atableServices';
+import '../css-scripts/cardscript.css';
 
 export default function Weather2hrs () {
     
@@ -6,12 +8,12 @@ export default function Weather2hrs () {
     const [forecasts, setForecasts] = useState([]);
     const [timestamp, setTimestamp] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [aTableData,setATableData] = useState([]);
     const [error, setError] = useState(null);
-// const cors = require("cors");
-// ErpTable.use(cors());
+
 async function getDataAndMapProperties() {
-    //remember to park all these URL services into 1 file later
-    const url = "https://api-open.data.gov.sg/v2/real-time/api/two-hr-forecast";
+    
+    const url = `${import.meta.env.VITE_API_URL_2HRS}`;
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -52,10 +54,18 @@ async function getDataAndMapProperties() {
 //pull API on page load
 useEffect(() => {
     const fetchData = async () => {
-      try {
-        const { areaMetadata, forecasts } = await getDataAndMapProperties();
-        setAreaMetadata(areaMetadata);
-        setForecasts(forecasts);
+        try {
+            const airtableRecords = await get2hrAirtable();
+            const { areaMetadata, forecasts } = await getDataAndMapProperties();
+            setAreaMetadata(areaMetadata);
+            setForecasts(forecasts);
+
+            // Transform airtable data for easy lookup
+            const airtableDataMap = airtableRecords.reduce((acc, record) => {
+                acc[record.name] = true; // for example: "Bishan": true
+                return acc;
+            }, {});
+            setATableData(airtableDataMap);
       } catch (error) {
         console.error(error.message);
       } finally {
@@ -86,21 +96,36 @@ useEffect(() => {
     };
 });
 
+const handleDelete = (areaName) => {
+    // Delete logic here
+};
+
+const handleAdd = (areaName) => {
+    // Add logic here
+};
+
 // Render the data
 return (
-    <div><h2>{new Date(timestamp).toLocaleString()}</h2>
+    <div>
+    <h2>{new Date(timestamp).toLocaleString()}</h2>
+    <div className="card-container">
         {groupedForecasts.map((area, index) => (
             <div key={index} className="card">
                 <h3>{area.name}</h3>
                 <p>Latitude: {area.latitude}, Longitude: {area.longitude}</p>
                 {area.forecasts.map((f, i) => (
                     <div key={i}>
-                        {/* <h4>Date & Time: {new Date(f.timestamp).toLocaleString()}</h4> */}
                         <p>Forecast: {f.forecast}</p>
                     </div>
                 ))}
+               {aTableData[area.name] ? (
+                    <button className="delete-button" onClick={() => handleDelete(area.name)}>Delete</button>
+                ) : (
+                    <button className="add-button" onClick={() => handleAdd(area.name)}>Add</button>
+                )}
             </div>
         ))}
     </div>
+</div>
 );
 }
