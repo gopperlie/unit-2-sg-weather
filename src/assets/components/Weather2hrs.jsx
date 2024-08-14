@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-import { get2hrAirtable } from '../services/atableServices';
+import { get2hrAirtable,saveAreaName,deleteAreaName } from '../services/atableServices';
 import '../css-scripts/cardscript.css';
 
 export default function Weather2hrs () {
@@ -62,9 +62,10 @@ useEffect(() => {
 
             // Transform airtable data for easy lookup
             const airtableDataMap = airtableRecords.reduce((acc, record) => {
-                acc[record.name] = true; // for example: "Bishan": true
+                acc[record.name] = record.id; // for example: "Bishan": record.id
                 return acc;
             }, {});
+
             setATableData(airtableDataMap);
       } catch (error) {
         console.error(error.message);
@@ -100,17 +101,57 @@ useEffect(() => {
     };
 });
 
-const handleDelete = (areaName) => {
-    // Delete logic here
+const handleDelete = async (areaName) => {
+    const recordId = aTableData[areaName]; // Get the record ID from state
+
+    if (!recordId) return; // If no record ID, do nothing
+
+    const url = `${import.meta.env.VITE_API_URL_AIRTABLE_2HRS}/${recordId}`;
+    const urlKey = `${import.meta.env.VITE_APIKEY_AIRTABLE}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                Authorization: `Bearer ${urlKey}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to delete: ${response.status}`);
+        }
+
+        // Update the local state to remove the deleted area
+        setATableData(prevData => {
+            const updatedData = { ...prevData };
+            delete updatedData[areaName]; // Remove the area from state
+            return updatedData;
+        });
+    } catch (error) {
+        console.error(error.message);
+    }
 };
 
-const handleAdd = (areaName) => {
-    // Add logic here
+
+// const recordId = aTableData["Bishan"];
+// console.log(recordId);
+const handleAdd = async (areaName) => {
+    try {
+        await saveAreaName(areaName);
+
+        // Update the local airtable state to reflect the new entry in Airtable
+        setATableData(prevData => ({
+            ...prevData,
+            [areaName]: true, // Mark this area as added
+        }));
+    } catch (error) {
+        console.error(error.message);
+    }
 };
 
 // Render the data
 return (
-    <div>
+    <>
     <h2>{new Date(timestamp).toLocaleString()}</h2>
     <div className="card-container">
         {groupedForecasts.map((area, index) => (
@@ -130,6 +171,6 @@ return (
             </div>
         ))}
     </div>
-</div>
+    </>
 );
 }
