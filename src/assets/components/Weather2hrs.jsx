@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-import { get2hrAirtable,saveAreaName,deleteAreaName } from '../services/atableServices';
+import { get2hrAirtable,saveAreaName} from '../services/atableServices';
 import '../css-scripts/cardscript.css';
 
 export default function Weather2hrs () {
