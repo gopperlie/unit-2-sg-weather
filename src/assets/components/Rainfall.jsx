@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 
-export default function Rainfall() {
-    const [rainfallData, setRainfallData] = useState([]);
-    const [stations, setStations] = useState([]);
+export default function StationReadings() {
+    const [stationsData, setStationsData] = useState([]);
+    const [timestamp, setTimestamp] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    async function getRainfall() {
+    async function fetchData() {
         const url = "https://api-open.data.gov.sg/v2/real-time/api/rainfall";
         try {
             const response = await fetch(url);
@@ -14,68 +15,56 @@ export default function Rainfall() {
             }
 
             const json = await response.json();
-            // console.log(json);
-            // Map the stations data
-            const stations = json.data.stations.map(station => ({
-                id: station.id,
-                name: station.name,
-                latitude: station.location.latitude,
-                longitude: station.location.longitude
-            }));
 
-            //Map the rainfall data
-            const rainfallData = json.data.readings.flatMap(reading => ({
-                timestamp: reading.timestamp,
-                data: reading.data.map(dat => ({
-                    stationId: dat.stationId,
-                    value: dat.value,
-                }))
-            }));
+            if (json.errorMsg) {
+                setError(json.errorMsg);
+                return;
+            }
 
+            const extractedTimestamp = json.data.readings[0].timestamp;
+            setTimestamp(extractedTimestamp);
 
-            return { stations, rainfallData };
+            // Combine station data with readings
+            const stationsWithReadings = json.data.stations.map(station => {
+                const reading = json.data.readings[0].data.find(r => r.stationId === station.id);
+                return {
+                    ...station,
+                    value: reading ? reading.value : 'N/A',
+                    readingUnit: json.data.readingUnit,
+                    timestamp: json.data.readings[0].timestamp,
+                };
+            });
 
+            setStationsData(stationsWithReadings);
         } catch (error) {
             console.error(error.message);
-            return [];
+            setError(error.message);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const { rainfallData, stations } = await getRainfall();
-            setStations(stations);
-            setRainfallData(rainfallData);
-          } catch (error) {
-            console.error(error.message);
-          } finally {
-            setIsLoading(false);
-          }
-        };
-
         fetchData();
     }, []);
-    if (isLoading) {
-        return <div>等一下..</div>;
-    }
-    const groupedRainfalls = stations.map(id => {
-        const values = readings.flatMap(reading =>
-            reading.readings.filter(r => r.stationId === stations.id).map(f => ({
-                stationsId: stations.id,
-                value: r.value,
-            }))
-        );
-        return {
-            ...area,
-            forecasts: areaForecasts,
-        };
-    });
 
-    //render the data
+    if (isLoading) {
+        return <div>等一下...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
     return (
-        <>
-        <p>Rain</p>
-        </>
+        <div><h2>{new Date(timestamp).toLocaleString()}</h2>
+            {stationsData.map((station, index) => (
+                <div key={index} style={{ border: '1px solid #ccc', padding: '20px', marginBottom: '10px' }}>
+                    <h3>Station ID: {station.id}</h3>
+                    <p>Name: {station.name}</p>
+                    <p>Reading Value: {station.value} {station.readingUnit}</p>
+                </div>
+            ))}
+        </div>
     );
 }

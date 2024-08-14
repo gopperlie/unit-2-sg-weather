@@ -4,7 +4,9 @@ export default function Weather2hrs () {
     
     const [areaMetadata, setAreaMetadata] = useState([]);
     const [forecasts, setForecasts] = useState([]);
+    const [timestamp, setTimestamp] = useState('');
     const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 // const cors = require("cors");
 // ErpTable.use(cors());
 async function getDataAndMapProperties() {
@@ -17,6 +19,13 @@ async function getDataAndMapProperties() {
         }
         
         const json = await response.json();
+
+        if (json.errorMsg) {
+            setError(json.errorMsg);
+            return;
+        }
+        const extractedTimestamp = json.data.items[0].timestamp;
+            setTimestamp(extractedTimestamp);
         
         // Mapping area_metadata
         const areaMetadata = json.data.area_metadata.map(area => ({
@@ -27,7 +36,7 @@ async function getDataAndMapProperties() {
         
         // Mapping forecasts
         const forecasts = json.data.items.flatMap(item => ({
-            timestamp: item.timestamp,
+            // timestamp: item.timestamp,
             forecasts: item.forecasts.map(forecast => ({
                 area: forecast.area,
                 forecast: forecast.forecast
@@ -37,6 +46,7 @@ async function getDataAndMapProperties() {
         return { areaMetadata, forecasts };
     } catch (error) {
         console.error(error.message);
+        setError(error.message);
     }
 }
 //pull API on page load
@@ -59,6 +69,10 @@ useEffect(() => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+}
   const groupedForecasts = areaMetadata.map(area => {
     const areaForecasts = forecasts.flatMap(forecast =>
         forecast.forecasts.filter(f => f.area === area.name).map(f => ({
@@ -74,14 +88,14 @@ useEffect(() => {
 
 // Render the data
 return (
-    <div>
+    <div><h2>{new Date(timestamp).toLocaleString()}</h2>
         {groupedForecasts.map((area, index) => (
             <div key={index} className="card">
                 <h3>{area.name}</h3>
                 <p>Latitude: {area.latitude}, Longitude: {area.longitude}</p>
                 {area.forecasts.map((f, i) => (
                     <div key={i}>
-                        <h4>Date & Time: {new Date(f.timestamp).toLocaleString()}</h4>
+                        {/* <h4>Date & Time: {new Date(f.timestamp).toLocaleString()}</h4> */}
                         <p>Forecast: {f.forecast}</p>
                     </div>
                 ))}
