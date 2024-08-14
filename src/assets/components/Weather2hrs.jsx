@@ -83,9 +83,13 @@ useEffect(() => {
   if (error) {
     return <div>Error: {error}</div>;
 }
-  const groupedForecasts = areaMetadata.map(area => {
-    const areaForecasts = forecasts.flatMap(forecast =>
-        forecast.forecasts.filter(f => f.area === area.name).map(f => ({
+  const groupedForecasts = areaMetadata
+  .map(area => {
+    const areaForecasts = forecasts
+    .flatMap(forecast =>
+        forecast.forecasts
+        .filter(f => f.area === area.name)
+        .map(f => ({
             timestamp: forecast.timestamp,
             forecast: f.forecast,
         }))
