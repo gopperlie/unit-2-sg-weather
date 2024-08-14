@@ -30,7 +30,7 @@ export async function get2hrAirtable() {
 
   export const createPet = async (formData) => {
     
-    const url = "https://api.airtable.com/v0/app2nl3LLXTP4Siql/Table%201";
+    const url = "h";
     const payload = {fields: {...formData, age: Number(formData.age)}}
     try {
       const response = await fetch(url, {
@@ -39,7 +39,7 @@ export async function get2hrAirtable() {
         headers: {
           "Content-Type": "application/json",
           Authorization:
-            "Bearer patV8bqFMeWK4dWVx.bf64718d7be7e701c5dfb8e580b5ec9fa1eb877251bdb0e763602d77f578124d",
+            "Bearer ",
         },
       });
       if (!response.ok) {
