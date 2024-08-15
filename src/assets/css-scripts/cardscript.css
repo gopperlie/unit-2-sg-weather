@@ -9,7 +9,7 @@
 
 /* Each card */
 .card {
-    background-color: #ffffff;
+    background-color: #f4ff3d;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 15px;
@@ -41,7 +41,7 @@
 
 /* Buttons within the card */
 button {
-    color: white;
+    color: #483DFF;
     border: none;
     border-radius: 8px;
     padding: 10px 15px;
@@ -52,13 +52,13 @@ button {
 }
 
 .add-button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: #3DFFA9;
+    color: #483DFF;
 }
 
 .delete-button {
-    background-color: #F44336;
-    color: white;
+    background-color: #FF3D93;
+    color: #F4FF3D;
 }
 
 .card button:hover {

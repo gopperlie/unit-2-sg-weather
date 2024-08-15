@@ -162,7 +162,8 @@ return (
                 <Col span={8} key={index}>
                     <Card 
             title={area.name}
-            bordered={true}>
+            bordered={true}
+            className="card">
            <p>Latitude: {area.latitude}, Longitude: {area.longitude}</p>
            {area.forecasts.map((f, i) => (
                     <div key={i}>
@@ -176,7 +177,7 @@ return (
                 disabled={aTableData[area.name]}
                 onClick={() => handleAdd(area.name)}
               >
-                Add
+                Add to Home
               </Button>
               <Button
                 type="primary"

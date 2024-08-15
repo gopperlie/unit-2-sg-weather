@@ -114,14 +114,24 @@ const groupedForecasts = areaMetadata
 // Render the data
 return (
     <>    
-    <h2>2 hour forecasts: {new Date(timestamp).toLocaleString()}</h2>
+    <Header style={{
+        display: 'flex',
+        alignItems: 'left',
+        color: '#ff6347', // Change font color (e.g., Tomato color
+        fontSize: '24px', // Change font size
+        fontWeight: 'bold',
+    }}
+    >
+    2 hour forecasts: {new Date(timestamp).toLocaleString()}</Header>
     <Row gutter={[16,16]}>
    
         {groupedForecasts.map((area, index) => (
             <Col span={8} key={index}>
                 <Card
                 title={area.name}
-                bordered={true}>
+                bordered={true}
+               className='card'            
+                >
                 <p>Latitude: {area.latitude}, Longitude: {area.longitude}</p>
                 {area.forecasts.map((f, i) => (
                     <div key={i}>
