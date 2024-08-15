@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react';
 import { get2hrAirtable,saveAreaName} from '../services/atableServices';
 import '../css-scripts/cardscript.css';
-import { Button, Card, Space, Col, Row } from 'antd';
+import { Button, Card, Space, Col, Row, Spin } from 'antd';
 
 export default function Weather2hrs () {
     
@@ -79,7 +79,7 @@ console.log(airtableRecords);
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spin/>;
   }
 
   if (error) {

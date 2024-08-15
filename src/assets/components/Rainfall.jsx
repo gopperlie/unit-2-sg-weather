@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Button, Card, Space, Col, Row } from 'antd';
+import { Button, Card, Spin, Col, Row } from 'antd';
+
 
 export default function StationReadings() {
     const [stationsData, setStationsData] = useState([]);
@@ -50,7 +51,7 @@ export default function StationReadings() {
     }, []);
 
     if (isLoading) {
-        return <div>等一下...</div>;
+        return <Spin />;
     }
 
     if (error) {

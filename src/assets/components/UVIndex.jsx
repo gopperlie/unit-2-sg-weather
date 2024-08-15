@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Spin } from 'antd';
 
 export default function UVIndex() {
     const [UVIndex, setUVIndex] = useState([]);
@@ -47,7 +48,7 @@ export default function UVIndex() {
     }, []);
 
     if (isLoading) {
-        return <div>Hang in there..</div>;
+        return <Spin/>;
     }
 
     return (
