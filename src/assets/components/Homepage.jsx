@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react';
 import { get2hrAirtable } from '../services/atableServices';
 import '../css-scripts/cardscript.css';
-import { Button, Card, Space, Col, Row } from 'antd';
+import { Button, Card, Space, Col, Row, Layout } from 'antd';
 
 export default function Homepage () {
     
