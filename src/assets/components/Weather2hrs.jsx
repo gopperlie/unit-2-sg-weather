@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react';
 import { get2hrAirtable,saveAreaName} from '../services/atableServices';
 import '../css-scripts/cardscript.css';
+import { Button, Card, Space, Col, Row } from 'antd';
 
 export default function Weather2hrs () {
     
@@ -59,7 +60,7 @@ useEffect(() => {
             const { areaMetadata, forecasts } = await getDataAndMapProperties();
             setAreaMetadata(areaMetadata);
             setForecasts(forecasts);
-
+console.log(airtableRecords);
             // Transform airtable data for easy lookup
             const airtableDataMap = airtableRecords.reduce((acc, record) => {
                 acc[record.name] = record.id; // for example: "Bishan": record.id
@@ -137,12 +138,14 @@ const handleDelete = async (areaName) => {
 // console.log(recordId);
 const handleAdd = async (areaName) => {
     try {
-        await saveAreaName(areaName);
-
+        const newRecord = await saveAreaName(areaName);
+        console.log(newRecord);
+       
+        const recordId = newRecord.id;
         // Update the local airtable state to reflect the new entry in Airtable
-        setATableData(prevData => ({
-            ...prevData,
-            [areaName]: true, // Mark this area as added
+        setATableData(oldData => ({
+            ...oldData,
+            [areaName]:recordId, // Mark this area as added
         }));
     } catch (error) {
         console.error(error.message);
@@ -153,24 +156,32 @@ const handleAdd = async (areaName) => {
 return (
     <>
     <h2>{new Date(timestamp).toLocaleString()}</h2>
-    <div className="card-container">
-        {groupedForecasts.map((area, index) => (
-            <div key={index} className="card">
-                <h3>{area.name}</h3>
-                <p>Latitude: {area.latitude}, Longitude: {area.longitude}</p>
-                {area.forecasts.map((f, i) => (
+    <Row gutter={20}>
+    {/* <Space direction="vertical" size={16}> */}
+            {groupedForecasts.map((area,index) => (
+                <Col span={8} key={index}>
+                    <Card 
+            title={area.name}
+            bordered={true}>
+           <p>Latitude: {area.latitude}, Longitude: {area.longitude}</p>
+           {area.forecasts.map((f, i) => (
                     <div key={i}>
                         <p>Forecast: {f.forecast}</p>
                     </div>
                 ))}
-               {aTableData[area.name] ? (
-                    <button className="delete-button" onClick={() => handleDelete(area.name)}>Delete</button>
-                ) : (
-                    <button className="add-button" onClick={() => handleAdd(area.name)}>Add</button>
+                {aTableData[area.name] ? (
+                    <Button type="primary" className="add-button" disabled onClick={() => handleAdd(area.name)}>Add</Button>
+                    ) : (
+                    <Button type="primary" className="add-button" onClick={() => handleAdd(area.name)}>Add</Button>
                 )}
-            </div>
-        ))}
-    </div>
+                {aTableData[area.name] ? (
+                    <Button type="primary" className="delete-button" onClick={() => handleDelete(area.name)}>Remove</Button>
+                ) : (
+                    <Button type="primary" disabled className="delete-button" onClick={() => handleDelete(area.name)}>Remove</Button>   
+                )}    
+            </Card></Col>))}
+            {/* </Space> */}
+           </Row>
     </>
 );
 }

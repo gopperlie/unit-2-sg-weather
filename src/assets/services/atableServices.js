@@ -53,11 +53,10 @@ export async function get2hrAirtable() {
       }
   
       const json = await response.json();
-      return json.records.map((record) => {
-        return {
-            ...record.fields,
-        };
-    });
+      // const mjson = {
+      //   [json.fields.name]:json.id
+      // };
+     return json;
     } catch (error) {
       console.error(error.message);
     }
