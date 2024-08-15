@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Button, Card, Space, Col, Row } from 'antd';
 
 export default function StationReadings() {
     const [stationsData, setStationsData] = useState([]);
@@ -57,14 +58,20 @@ export default function StationReadings() {
     }
 
     return (
-        <div><h2>{new Date(timestamp).toLocaleString()}</h2>
+        <>
+        <h2>{new Date(timestamp).toLocaleString()}</h2>
+         <Row gutter={[16,16]}>
             {stationsData.map((station, index) => (
-                <div key={index} style={{ border: '1px solid #ccc', padding: '20px', marginBottom: '10px' }}>
-                    <h3>Station ID: {station.id}</h3>
+                <Col span={8} key={index}>
+                    <Card 
+                    title={`Station ID: ${station.id}`}
+                    bordered={true}>
                     <p>Name: {station.name}</p>
                     <p>Reading Value: {station.value} {station.readingUnit}</p>
-                </div>
-            ))}
-        </div>
+                    </Card>
+                    </Col>
+            ))}    
+        </Row>
+        </>
     );
 }

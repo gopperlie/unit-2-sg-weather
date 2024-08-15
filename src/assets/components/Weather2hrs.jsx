@@ -156,8 +156,8 @@ const handleAdd = async (areaName) => {
 return (
     <>
     <h2>{new Date(timestamp).toLocaleString()}</h2>
-    <Row gutter={20}>
-    {/* <Space direction="vertical" size={16}> */}
+    <Row gutter={[16,16]}>
+    
             {groupedForecasts.map((area,index) => (
                 <Col span={8} key={index}>
                     <Card 
@@ -169,19 +169,26 @@ return (
                         <p>Forecast: {f.forecast}</p>
                     </div>
                 ))}
-                {aTableData[area.name] ? (
-                    <Button type="primary" className="add-button" disabled onClick={() => handleAdd(area.name)}>Add</Button>
-                    ) : (
-                    <Button type="primary" className="add-button" onClick={() => handleAdd(area.name)}>Add</Button>
-                )}
-                {aTableData[area.name] ? (
-                    <Button type="primary" className="delete-button" onClick={() => handleDelete(area.name)}>Remove</Button>
-                ) : (
-                    <Button type="primary" disabled className="delete-button" onClick={() => handleDelete(area.name)}>Remove</Button>   
-                )}    
+               <Space>
+              <Button
+                type="primary"
+                className="add-button"
+                disabled={aTableData[area.name]}
+                onClick={() => handleAdd(area.name)}
+              >
+                Add
+              </Button>
+              <Button
+                type="primary"
+                className="delete-button"
+                disabled={!aTableData[area.name]}
+                onClick={() => handleDelete(area.name)}
+              >
+                Remove
+              </Button>
+            </Space> 
             </Card></Col>))}
-            {/* </Space> */}
-           </Row>
+          </Row>
     </>
 );
 }

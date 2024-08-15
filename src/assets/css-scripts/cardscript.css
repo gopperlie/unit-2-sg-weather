@@ -4,7 +4,7 @@
     flex-wrap: wrap;
     justify-content: space-around;
     padding: 10px;
-    gap: 20px; /* Adds space between the cards */
+    
 }
 
 /* Each card */
@@ -17,6 +17,8 @@
     max-width: 100%; /* Ensure cards don’t exceed the container width */
     box-sizing: border-box;
     transition: transform 0.2s ease-in-out;
+    margin: 10px 0;
+    
 }
 
 /* Card hover effect */

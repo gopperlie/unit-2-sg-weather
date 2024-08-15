@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react';
 import { get2hrAirtable } from '../services/atableServices';
 import '../css-scripts/cardscript.css';
+import { Button, Card, Space, Col, Row } from 'antd';
 
 export default function Homepage () {
     
@@ -104,23 +105,23 @@ const groupedForecasts = areaMetadata
 
 // Render the data
 return (
-    <div>
+    <>    
     <h2>2 hour forecasts: {new Date(timestamp).toLocaleString()}</h2>
+    <Row gutter={[16,16]}>
    
-    <div className="card-container">
         {groupedForecasts.map((area, index) => (
-            <div key={index} className="card">
-                <h3>{area.name}</h3>
+            <Col span={8} key={index}>
+                <Card
+                title={area.name}
+                bordered={true}>
                 <p>Latitude: {area.latitude}, Longitude: {area.longitude}</p>
                 {area.forecasts.map((f, i) => (
                     <div key={i}>
                         <p>Forecast: {f.forecast}</p>
                     </div>
-                ))}
-               
-            </div>
+                ))}</Card></Col>
         ))}
-    </div>
-</div>
+    </Row>
+</>
 );
 }
