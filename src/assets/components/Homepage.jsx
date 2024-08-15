@@ -1,10 +1,18 @@
 import { useState,useEffect } from 'react';
 import { get2hrAirtable } from '../services/atableServices';
 import '../css-scripts/cardscript.css';
-import { Button, Card, Space, Col, Row, Layout } from 'antd';
+import { Button, Card, Space, Col, Row, Layout, Breadcrumb, Menu, theme } from 'antd';
+
+const {Header, Content, Footer } = Layout;
+const items = new Array(15).fill(null).map((_, index) => ({
+    key: index + 1,
+    label: `nav ${index + 1}`,
+  }));
 
 export default function Homepage () {
-    
+    const {
+        token: { colorBgContainer, borderRadiusLG },
+      } = theme.useToken();
     const [areaMetadata, setAreaMetadata] = useState([]);
     const [forecasts, setForecasts] = useState([]);
     const [timestamp, setTimestamp] = useState('');
