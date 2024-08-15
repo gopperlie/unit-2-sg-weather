@@ -156,7 +156,7 @@ const handleAdd = async (areaName) => {
 return (
     <>
     <h2>{new Date(timestamp).toLocaleString()}</h2>
-    <Row gutter={[16,16]}>
+    <Row gutter={[30,30]}>
     
             {groupedForecasts.map((area,index) => (
                 <Col span={8} key={index}>
