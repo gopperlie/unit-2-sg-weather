@@ -1,6 +1,5 @@
 import { useState,useEffect } from 'react';
 import { get2hrAirtable } from '../services/atableServices';
-// import '../css-scripts/cardscript.css';
 import { Card, Col, Row, Layout, Spin } from 'antd';
 
 const {Header } = Layout;
@@ -111,10 +110,11 @@ return (
     <>    
     <Header style={{
         display: 'flex',
-        alignItems: 'left',
+        alignItems: 'center',
         color: "white", // Change font color (e.g., Tomato color
         fontSize: '18px', // Change font size
         fontWeight: 'bold',
+        // padding: '1px'
     }}
     >
    <h2> 2 hour forecasts: {new Date(timestamp).toLocaleString()}</h2></Header>
