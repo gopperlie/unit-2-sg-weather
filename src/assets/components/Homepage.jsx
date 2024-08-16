@@ -1,7 +1,7 @@
 import { useState,useEffect } from 'react';
 import { get2hrAirtable } from '../services/atableServices';
 // import '../css-scripts/cardscript.css';
-import { Card, Col, Row, Layout,theme } from 'antd';
+import { Card, Col, Row, Layout, Spin } from 'antd';
 
 const {Header } = Layout;
 
@@ -81,7 +81,7 @@ useEffect(() => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Spin />;
   }
 
   if (error) {
