@@ -60,7 +60,7 @@ useEffect(() => {
             const { areaMetadata, forecasts } = await getDataAndMapProperties();
             setAreaMetadata(areaMetadata);
             setForecasts(forecasts);
-console.log(airtableRecords);
+
             // Transform airtable data for easy lookup
             const airtableDataMap = airtableRecords.reduce((acc, record) => {
                 acc[record.name] = record.id; // for example: "Bishan": record.id
