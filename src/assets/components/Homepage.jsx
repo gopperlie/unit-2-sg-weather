@@ -1,6 +1,7 @@
 import { useState,useEffect } from 'react';
 import { get2hrAirtable } from '../services/atableServices';
 import { Card, Col, Row, Layout, Spin } from 'antd';
+import { HomepageCard } from './Cards';
 
 const {Header } = Layout;
 
@@ -122,17 +123,10 @@ return (
    
         {groupedForecasts.map((area, index) => (
             <Col span={8} key={index}>
-                <Card
-                title={area.name}
-                bordered={true}
-               className='card'            
-                >
-                <p>Latitude: {area.latitude}, Longitude: {area.longitude}</p>
-                {area.forecasts.map((f, i) => (
-                    <div key={i}>
-                        <p>Forecast: {f.forecast}</p>
-                    </div>
-                ))}</Card></Col>
+                <HomepageCard
+                area={area}
+                />
+                </Col>
         ))}
     </Row>
 </>

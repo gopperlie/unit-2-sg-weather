@@ -2,6 +2,7 @@ import { useState,useEffect } from 'react';
 import { get2hrAirtable,saveAreaName} from '../services/atableServices';
 import '../css-scripts/cardscript.css';
 import { Button, Card, Space, Col, Row, Spin } from 'antd';
+import  {ForecastCard}  from './Cards'
 
 export default function Weather2hrs () {
     
@@ -160,35 +161,13 @@ return (
     
             {groupedForecasts.map((area,index) => (
                 <Col span={8} key={index}>
-                    <Card 
-            title={area.name}
-            bordered={true}
-            className="card">
-           <p>Latitude: {area.latitude}, Longitude: {area.longitude}</p>
-           {area.forecasts.map((f, i) => (
-                    <div key={i}>
-                        <p>Forecast: {f.forecast}</p>
-                    </div>
-                ))}
-               <Space>
-              <Button
-                type="primary"
-                className="add-button"
-                disabled={aTableData[area.name]}
-                onClick={() => handleAdd(area.name)}
-              >
-                Add to Home
-              </Button>
-              <Button
-                type="primary"
-                className="delete-button"
-                disabled={!aTableData[area.name]}
-                onClick={() => handleDelete(area.name)}
-              >
-                Remove
-              </Button>
-            </Space> 
-            </Card></Col>))}
+            <ForecastCard
+            area={area}
+            aTableData={aTableData}
+            handleAdd={handleAdd}
+            handleDelete={handleDelete}
+          />
+            </Col>))}
           </Row>
     </>
 );
