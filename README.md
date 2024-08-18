@@ -15,7 +15,7 @@ without being directed to the Home page. Users can also remove these areas by cl
 
 ## Attributions & Credits
 
-- [ChatGPT] Some assistance was needed to help map the objects fetched from the API. Prompts include: "How to map {object} to {'Area':'ID} etc.
+- ChatGPT: Some assistance was needed to help map the objects fetched from the API. Prompts include: "How to map {object} to {'Area':'ID} etc.
 - [Ant Design](https://ant.design//)
 - [Airtable](https://airtable.com/)
 
