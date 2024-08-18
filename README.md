@@ -2,7 +2,7 @@
 
 **Overview**
 
-![home page](./src/assets/homepagess.png)
+![home page](./src/assets/images/homepagess.png)
 
 ## Key Features
 
@@ -11,7 +11,7 @@
 Areas which have been added to home will have the 'Add to Home' button ghost out and disabled. Users can favourite multiple areas
 without being directed to the Home page. Users can also remove these areas by clicking on 'Remove'.
 
-![buttons](./src/assets/2hrforecastss.png)
+![buttons](./src/assets/images/2hrforecastss.png)
 
 ## Attributions & Credits
 
